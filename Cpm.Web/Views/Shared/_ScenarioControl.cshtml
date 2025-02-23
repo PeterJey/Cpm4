@@ -1,0 +1,109 @@
+﻿@model Cpm.Core.ViewModels.ScenarioControlVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="row">
+    <div class="col-sm-6">
+        <span class="scenario-title"><span id="modified-flag" class="text-warning">(Modified) </span><span id="original-name">@Model.Name</span></span> for @string.Join(" and ", Model.SeasonScoresVm.Scores.Select(x => $"{x.Score} {x.Season}".ToLowerInvariant()))
+    </div>
+    <div class="pull-right">
+        <button id="change-season-scores" class="btn btn-primary btn-sm">Change weather</button>
+        <button id="show-field-selection" class="btn btn-default btn-sm">Select fields</button>
+        <button id="cancel-field-selection" class="btn btn-default btn-sm">Cancel</button>
+        <button id="apply-field-selection" class="btn btn-success btn-sm">Apply</button>
+        <button id="save-scenario" class="btn btn-success btn-sm">Save</button>
+        <button id="set-as-active" class="btn btn-primary btn-sm">Set as active</button>
+        <button id="rename-scenario" class="btn btn-primary btn-sm">Rename</button>
+        <button id="duplicate-scenario" class="btn btn-primary btn-sm">Duplicate</button>
+        <button id="delete-scenario" class="btn btn-danger btn-sm">Delete</button>
+    </div>
+</div>
+
+<div class="row">
+    <span id="field-selection-message" class="text-danger">Could not apply the changes</span>
+</div>
+
+<hr/>
+
+<div class="row">
+    <div class="col-md-12">
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th class="scenario-field-selection">Show</th>
+            <th>Name</th>
+            <th>Variety</th>
+            <th>Area [@Model.AreaUnit]</th>
+            <th>Algorithm</th>
+            <th>Week offset</th>
+            <th>Season</th>
+            <th></th>
+            <th>Budget</th>
+            <th>Target</th>
+            <th>Relative</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{ var index = 0;}
+        @foreach (var field in @Model.Fields)
+        {
+            <tr class="scenario-field"
+                data-field-id="@field.FieldId" data-field-name="@field.Name" data-field-ordinal="@index">
+                <td class="scenario-field-selection"><input type="checkbox" @(field.IsVisible ? "checked=\"checked\"" : "")/></td>
+                <td><a asp-page="/Fields/MonthlyDiary" asp-route-fieldid="@field.FieldId">@field.Name</a></td>
+                <td>@field.Variety</td>
+                <td class="text-right">@field.Area</td>
+                <td><a asp-page="/Scenarios/Field" asp-route-contextid="@Model.ContextId" asp-route-index="@index" class="suppress-dirty-check">@field.Algorithm</a></td>
+                <td>
+                    <span class="week-offset" data-value="@field.WeekOffset"></span>
+                    <button class="btn-link change-week-offset"><span class="fa fa-pencil"></span></button>
+                </td>
+                <td>@field.AffectingSeasons</td>
+                <td>
+                    @if (field.Comments.Any())
+                    {
+                        @:&nbsp;<span class="glyphicon glyphicon-book text-muted" title="@Html.Raw(string.Join("&#13;", field.Comments.Select(Html.Encode)))"></span>
+                    }
+                </td>
+                <td class="text-right">@field.Budget</td>
+                <td class="text-right">@field.Target</td>
+                <td class="text-right @(field.IsSignificantlyHigher || field.IsSignificantlyLower ? "relative-exceeded" : "")">@field.Relative</td>
+            </tr>
+            index++;
+        }
+        </tbody>
+    </table>
+
+    </div>
+</div>
+
+@* dialogs *@
+<div hidden>
+    <div id="season-scores-template" data-confirm="Apply" data-title="Change season quality">
+        <div>
+            @foreach (var score in Model.SeasonScoresVm.Scores)
+            {
+                <label class="control-label">@score.Season</label>
+                <div class="input-group">
+                    <select class="form-control season-score" data-season="@score.Season">
+                        @foreach (var s in score.ScoresList)
+                        {
+                            <option value="@s.Value" @(score.Score == s.Value ? "selected" : "")>@s.Description</option>
+                        }
+                    </select>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="week-offset-template" data-confirm="Apply" data-title="Change week offset">
+        <h4>Field "<span id="field-name"></span>"</h4>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button id="make-earlier" class="btn btn-default" type="button">Make earlier</button>
+            </span>
+            <span id="new-week-offset" class="form-control" data-value="0"></span>
+            <span class="input-group-btn">
+                <button id="make-later" class="btn btn-default" type="button">Make later</button>
+            </span>
+        </div>
+    </div>
+</div>

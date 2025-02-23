@@ -1,0 +1,40 @@
+﻿@page
+@model Cpm.Web.Pages.Allocations.IndexModel
+@{
+    ViewData["Title"] = "Allocations";
+}
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a asp-page="/Dashboard" asp-route-siteid=@Model.ViewModel.SiteId>Dashboard (@Model.ViewModel.FarmName / @Model.ViewModel.SiteName)</a></li>
+        <li class="active">Allocations</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <a id="weekly-link" class="btn btn-default btn-sm">Weekly view</a>
+    </div>
+    <div class="col-md-8">
+        <ul class="list-inline" id="calendar-navigation">
+            <li><button class="btn btn-default btn-sm" id="previousButton">Previous</button></li>
+            <li><button class="btn btn-primary btn-sm" id="todayButton">Today</button></li>
+            <li><button class="btn btn-default btn-sm" id="nextButton">Next</button></li>
+        </ul>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+
+
+<div class="row">
+    <div id="contentgrid" class="col-md-12"></div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var allocations = new App.Allocations("@Model.ViewModel.SiteId", "@Model.Position", "@Model.AllocationUnit");
+        });
+    </script>
+}

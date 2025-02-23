@@ -1,0 +1,15 @@
+﻿@model Cpm.Core.ViewModels.AllocationProductVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<table class="alloc-field">
+    @foreach (var field in Model.Fields)
+    {
+        <tr title="@field.FieldVm.FieldName (@field.FieldVm.Description)" data-amount="@field.Weight" data-field="@field.FieldVm.FieldName">
+            <td class="alloc-field-name">@field.FieldVm.FieldName</td>
+            <td class="alloc-field-weight"><strong>@(field.Weight?.ToString("N0") ?? "-")</strong><br/>
+                <span class="alloc-field-weight">@(field.Trays?.ToString("N0") ?? "")</span>
+                <span class="alloc-field-weight">@(field.Punnets?.ToString("N0") ?? "")</span>
+            </td>
+        </tr>
+    }
+</table>

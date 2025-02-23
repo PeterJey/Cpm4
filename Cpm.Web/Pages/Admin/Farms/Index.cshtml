@@ -1,0 +1,46 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Farms";
+}
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a asp-page="/Dashboard">Dashboard</a></li>
+        <li><a asp-page="/Admin/Index">Admin</a></li>
+        <li class="active">Farms</li>
+    </ol>
+    <h2>@ViewData["Title"]</h2>
+</div>
+@Html.Raw(Model.LoadStatusHtml())
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>No of sites</th>
+        <th>Total fields</th>
+        <th>Total area [ha]</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var farm in Model.AllFarms)
+    {
+        <tr>
+            <td>@farm.FarmId</td>
+            <td>@farm.Name</td>
+            <td>@farm.Sites.Count</td>
+            <td>@farm.Sites.Sum(s => s.Fields.Count)</td>
+            <td>@farm.Sites.Sum(s => s.Fields.Sum(f => f.AreaInHectares)).ToString("N")</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<hr/>
+
+<a asp-page="./Import" class="btn btn-default">Import</a>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

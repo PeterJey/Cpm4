@@ -1,0 +1,127 @@
+﻿@model Cpm.Core.ViewModels.AllocationWeekVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div id="as-loaded" data-week="@Model.Week" data-unit="@Model.AllocationUnit" hidden></div>
+
+<h3 class="text-center">Week @Model.Week</h3>
+
+<table class="alloc">
+    <thead>
+        <tr>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center">To Allocate</th>
+            @foreach (var product in Model.UsedProducts)
+            {
+                <th class="text-center">@product</th>
+            }
+            <th class="text-center">Allocated</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var day in Model.Days)
+        {
+            <tr data-date="@day.Date?.ToString("yyyy-MM-dd")" class="alloc-row-first">
+                @{ await Html.RenderPartialAsync("_AllocationDateCell", day); }
+                @{await Html.RenderPartialAsync("_AllocationField", day.Summary);}
+            </tr>
+
+            foreach (var field in day.Fields)
+            {
+                <tr data-date="@day.Date?.ToString("yyyy-MM-dd")" class="alloc-row-day"
+                    data-fieldid="@field.Field.Id" data-field="@field.Field.FieldName">
+                    @{await Html.RenderPartialAsync("_AllocationField", field);}
+                </tr>
+            }
+        }
+        <tr class="alloc-row-first">        
+            @{ await Html.RenderPartialAsync("_AllocationDateCell", Model.Summary); }
+            @{await Html.RenderPartialAsync("_AllocationField", Model.Summary.Summary);}
+        </tr>
+        @foreach (var field in Model.Summary.Fields)
+        {
+            <tr class="alloc-row-totals">
+                @{await Html.RenderPartialAsync("_AllocationField", field);}
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* dialogs *@
+<div hidden="hidden">
+    <div id="edit-allocation-template" data-confirm="Save" data-title="Edit allocation">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="text" id="date-box" class="form-control" readonly="readonly">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>Field</label>
+                    <input type="text" id="field-box" class="form-control" readonly="readonly">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>Product</label>
+                    <select type="search" class="form-control" id="product-select">
+                        @foreach (var product in Model.AllProducts)
+                        {
+                            <option value="@product.Value">@product.Description</option>
+                        }
+                        <option value="">Other...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>Type</label>
+                    <input type="text" id="product-type-box" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>Punnets per box</label>
+                    <input type="text" id="product-per-tray-box" class="form-control mbox-number">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>Punnet [grams]</label>
+                    <input type="text" id="product-per-punnet-box" class="form-control mbox-number">
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>Allocate</label>
+                    <input type="text" id="amount-box" class="form-control mbox-number mbox-focus">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>&nbsp;</label>
+                    <select id="unit-box" class="form-control">
+                        @foreach (var unit in Model.AvailableUnits)
+                        {
+                            <option value="@unit.Value">@unit.Description</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <label>&nbsp;</label>
+                    <input type="text" id="weight-box" class="form-control text-right" readonly="readonly">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

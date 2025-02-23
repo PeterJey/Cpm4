@@ -1,0 +1,93 @@
+﻿@page
+@model Cpm.Web.Pages.Scenarios.FieldModel
+@{
+    ViewData["Title"] = "Scenario field";
+}
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a id="dashboard-link" asp-page="/Dashboard" asp-route-siteid=@Model.Context.SiteId>Dashboard (@Model.Context.FarmName / @Model.Context.SiteName)</a></li>
+        <li><a id="control-link" asp-page="/Scenarios/Control" asp-route-contextid=@Model.Context.Id>Scenario "@Model.Context.Name"</a></li>
+        <li class="active">Field "<span>@Model.FieldName</span>"</li>
+    </ol>
+</div>
+
+<table class="algorithms">
+    <thead>
+    <tr>
+        <th class="text-center">Week</th>
+        <th class="text-center"></th>
+        @foreach (var name in Model.ViewModel.NamesRow)
+        {
+            <th colspan="2" class="text-center">@name <input type="radio" name="algorithm" data-algorithm="@name" @(Model.ViewModel.SelectedAlgorithm == @name ? "checked" : "")/></th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="algorithms-summary">
+        <td></td>
+        <td class="text-right"><strong>Target</strong></td>
+        @foreach (var target in Model.ViewModel.TargetRow)
+        {
+            <td colspan="2" class="text-right">@target</td>
+        }
+    </tr>
+    <tr class="algorithms-summary">
+        <td></td>
+        <td class="text-right"><strong>Relative</strong></td>
+        @foreach (var relative in Model.ViewModel.RelativeYieldRow)
+        {
+            <td colspan="2" class="text-right @(relative.IsSignificantlyHigher || relative.IsSignificantlyLower ? "relative-exceeded": "")">@relative.Relative</td>
+        }
+    </tr>
+    <tr class="algorithms-summary">
+        <td></td>
+        <td></td>
+        @foreach (var comments in Model.ViewModel.Comments)
+        {
+            <td colspan="2" class="text-right" title="@Html.Raw(string.Join("&#13;", comments.Select(Html.Encode)))">@(comments.Any() ? "?" : "")</td>
+        }
+    </tr>
+    @foreach (var row in Model.ViewModel.Rows)
+    {
+    <tr>
+        <td class="text-right">@row.Week</td>
+        <td class="text-right">@row.Commencing</td>
+        @foreach (var value in row.Values)
+        {
+            <td class="text-right algorithm-values @(value.IsActual ? "val-harvest-completed" : value.IsInferred ? "val-inferred" : "val-forecasted")" data-is-actual="@(value.IsActual ? "true" : "false")">@value.Weight</td>
+            if (value != row.Values.LastOrDefault())
+            {
+                <td class="text-right @(value.ShowStats ? "stats-show" : "stats-muted")">
+                    @if (value.ShowStats)
+                    {
+                        <div>@value.StatsWeightMax</div>
+                        <div>@value.StatsWeightMin</div>
+                    }
+                </td>
+            }
+        }
+    </tr>
+    }
+    </tbody>
+</table>
+
+
+<div id="error" hidden>
+    <p class="text-danger">Could not update the scenario.</p>
+</div>
+
+<button id="apply-and-stay" class="btn btn-primary">Apply</button>
+<button id="cancel-and-back" class="btn btn-default">Return to scenario</button>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var algorithms = new App.Algorithms("@Model.Context.Id", @Model.Index, @Model.WeekOffset);
+        });
+    </script>
+}
+
+
+

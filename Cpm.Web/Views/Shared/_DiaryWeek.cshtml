@@ -1,0 +1,60 @@
+﻿@using Cpm.Core
+@using Cpm.Web.Security
+@model Cpm.Core.ViewModels.DiaryWeekVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@foreach (var day in Model.Days)
+{
+    <td class="dc-day @(@day.Date.Date == Clock.Now.Date ? "dc-day-today" : "") @(@day.IsPadding ? "dc-day-padding" : "") "
+        data-date="@day.Date.ToString("yyyy-MM-dd")" data-fieldid="@Model.FieldId">
+        <div class="dc-day-number">@day.Date.ToString("d ")</div>
+        <div class="dc-icons">
+            @if (day.Note != null && User.CanChangeDiaryForField(Model.FieldId))
+            {
+                <span class="glyphicon glyphicon-text-background @(string.IsNullOrEmpty(day.Note.Text) ? "hidden" : "")"></span>
+                <span class="glyphicon glyphicon-picture @(day.Note.Pictures.Count > 0 ? "" : "hidden")"></span>
+                <span class="">@(day.Note.Pictures.Count > 0 ? day.Note.Pictures.Count.ToString() : "")</span>
+            }
+        </div>
+        <div class="dc-weights">
+            <div class="val-forecasted">&nbsp;</div>
+            @if (day.Weight.HasValue)
+            {
+                <div class="@(Model.IsCompleted ? "val-harvest-completed" : "val-harvest")">@day.Weight?.ToString("N0")</div>
+            }
+            else if (!Model.IsCompleted && day.Planned.HasValue)
+            {
+                if (User.CanChangeDailyPlanForField(Model.FieldId))
+                {
+                    <div class="val-planned">@day.Planned?.ToString("N0")</div>
+                }
+            }
+            else if (User.CanViewForecastsForField(Model.FieldId))
+            {
+                <div class="val-forecasted">&nbsp;</div>
+            }
+        </div>
+    </td>
+}
+<td class="dc-total">
+    <div class="dc-weights">
+        <div class="@(Model.IsForecastActualValue ? "val-harvest-completed" : Model.IsForecastInferred ? "val-inferred" : "val-forecasted")"
+             title="Forecasted for week">
+            @if (!Model.IsCompleted && Model.ForecastedWeight.HasValue && User.CanViewForecastsForField(Model.FieldId))
+            {
+                @(Model.ForecastedWeight?.ToString("N0"))
+            }
+        </div>
+        <span class="@(Model.IsCompleted ? "val-harvest-completed" : "val-harvest")" 
+              title="@(Model.IsCompleted ? "Week completed, total picked." : "Picked so far this week")"
+              >@(Model.TotalWeight?.ToString("N0") ?? (Model.IsMixed ? "0" : ""))</span>@if (Model.IsMixed && User.CanChangeDailyPlanForField(Model.FieldId)) {@:&nbsp;/&nbsp;<span class="val-planned" title="Planned for this week (including already picked)">@Model.Total?.ToString("N0")</span>
+    }
+    </div>
+</td>
+<td class="dc-total @(Model.ShowStats ? "stats-show" : "stats-muted")">
+    @if (Model.ShowStats)
+    {
+        <div>@Model.StatsWeightMax</div>
+        <div>@Model.StatsWeightMin</div>
+    }
+</td>

@@ -1,0 +1,153 @@
+﻿@model Cpm.Core.ViewModels.DiaryDayVm
+
+<h4>@Model.FieldName - @Model.Date.ToString("dddd, d MMMM yyyy")</h4>
+
+<div hidden id="selectedDate">@Model.Date.ToString("yyyy-MM-dd")</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="input-group">
+            <span class="input-group-addon">
+                @if (Model.Weight.HasValue)
+                {
+                    @:Harvested: <strong ><span id = "harvest-weight" > @Model.Weight?.ToString("N0") </span ></strong > kg
+                }
+                else
+                {
+                    @:No harvest recorded
+                }
+            </span>
+            @if (Model.ShowChangeHarvest)
+            {
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="record-harvest">Record harvest</button>
+                </span>
+            }
+        </div>
+    </div>
+    @if (Model.CanBePlanned && Model.ShowPlanning)
+    {
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    @if (Model.Planned.HasValue)
+                    {
+                        @:Planned: <strong ><span id = "planned-weight" > @Model.Planned?.ToString("N0") </span ></strong > kg
+                    }
+                    else
+                    {
+                        @:No picking planned
+                    }
+                </span>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="plan-picking">Plan picking</button>
+                </span>
+            </div>
+        </div>
+    }
+    @if (Model.ShowChangeDiary && Model.Note == null)
+    {
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary add-picture-btn">Add picture</button>
+                </span>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" id="edit-note">Write comment</button>
+                </span>
+            </div>
+        </div>
+    }
+</div>
+<br/>
+<div class="row">
+    @if (Model.ShowChangeDiary && Model.Note != null)
+    {
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right top-right">
+                        <button class="btn btn-primary add-picture-btn">Add picture</button>
+                        <button class="btn btn-primary" type="button" id="edit-note">Edit comment</button>
+                        <button class="btn btn-danger" type="button" id="delete-note">Delete note</button>
+                    </div>
+                    <p class="panel-title">First created on @Model.Note.CreatedOn by <strong>@Model.Note.CreatedBy</strong></p>
+                    @if (Model.Note.ModifiedTimes > 0)
+                    {
+                        <p>Last modified on @Model.Note.ModifiedOn by <strong>@Model.Note.ModifiedBy</strong> (total @Model.Note.ModifiedTimes times)</p>
+                    }
+                    else
+                    {
+                        @:&nbsp;
+                    }
+                </div>
+                <div class="panel-body">
+                    <ul class="list-inline">
+                        @foreach (var picture in Model.Pictures)
+                        {
+                            <li class="note-picture">
+                                <button class="btn btn-danger btn-xs delete-picture" style="position: absolute;" data-pictureid="@picture.Id">Delete</button>
+                                <a href="@picture.FullUrl" target="_blank" title="Click to open in a new tab">
+                                    <img src="/images/1x1.png" data-src="@picture.ThumbUrl" alt="image"/>
+                                </a>
+                                <p>
+                                    <span>@(picture.TakenOn?.ToString("g") ?? "?")</span><br />
+                                    <span>by <strong>@picture.UploadedBy</strong></span><br />
+                                    @if (picture.HasLocation)
+                                    {
+                                        <span><a href="https://www.google.com/maps/?q=@(picture.LocationLat),@(picture.LocationLon)" target="_blank">show on map</a></span><br />
+                                    }
+                                    else
+                                    {
+                                        @:no location data
+                                    }
+                                </p>
+                            </li>
+                        }
+                    </ul>
+                    <hr/>
+                    <div id="originalNoteText">@Model.Note?.Text</div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (Model.ShowChangeDiary)
+{
+    <form hidden method="post" name="photo" id="upload-form" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input hidden id="file-input" type="file" name="file" accept=".jpg,.jpeg">
+        <input hidden type="text" name="day" value="@Model.Date.ToString("yyyy-MM-dd")">
+        <input hidden type="text" name="tag" value="empty tag">
+        <input hidden type="text" name="fieldid" value="@Model.FieldId">
+    </form>
+}
+
+@* dialogs *@
+<div hidden="hidden">
+    <div id="plan-picking-template" data-confirm="Save" data-title="Plan pick">
+        <div class="input-group">
+            <span class="input-group-addon">Planned pick weight</span>
+            <input type="text" id="new-planned-weight" class="form-control mbox-focus mbox-number" placeholder="Weight" value="">
+            <span class="input-group-addon">kg</span>
+        </div>
+    </div>
+    <div id="edit-harvest-template" data-confirm="Save" data-title="Edit harvest record">
+        <div class="input-group">
+            <span class="input-group-addon">Harvested weight</span>
+            <input type="text" id="new-harvest-weight" class="form-control mbox-focus mbox-number" placeholder="Weight" value="">
+            <span class="input-group-addon">kg</span>
+        </div>
+        <br />
+        <div class="input-group @(@Model.CanBecomeLastHarvestOfTheWeek ? "" : "hidden")">
+            <span class="input-group-addon">
+                <input type="checkbox" id="last-harvest-day">
+                <span class="text-left">Last harvest day this week</span>
+            </span>
+        </div>
+    </div>
+    <div id="edit-note-template" data-confirm="Save" data-title="Edit comment">
+        <textarea rows="10" id="note-text" class="mbox-focus" style="min-width: 100%">@Model.Note?.Text</textarea>
+    </div>
+</div>

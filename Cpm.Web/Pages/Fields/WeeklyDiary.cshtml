@@ -1,0 +1,38 @@
+﻿@page
+@model Cpm.Web.Pages.Fields.WeeklyDiaryModel
+@{
+    ViewData["Title"] = "Diary";
+}
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a asp-page="/Dashboard" asp-route-siteid=@Model.SiteId>Dashboard (@Model.FarmName / @Model.SiteName)</a></li>
+        <li class="active">Diary</li>
+    </ol>
+</div>
+
+@if (User.CanViewAllocationsForSite(Model.SiteId))
+{
+    <a asp-page="/Allocations/Index" asp-route-siteid="@Model.SiteId" asp-route-position="@Model.Position" class="btn btn-default">Product allocation</a>
+}
+
+<ul class="list-inline" id="calendar-navigation">
+    <li><button class="btn btn-default btn-sm" id="previousButton">Previous</button></li>
+    <li><button class="btn btn-primary btn-sm" id="todayButton">Today</button></li>
+    <li><button class="btn btn-default btn-sm" id="nextButton">Next</button></li>
+</ul>
+
+<div id="calendar" class="col-md-12"></div>
+
+<hr />
+
+@* prevent the page jumping while loading the day by setting the height *@
+<div id="details" style="min-height: 44em"></div>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var diary = new App.WeeklyDiary("@Model.SiteId", "@Model.Position");
+        });
+    </script>
+}

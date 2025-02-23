@@ -1,0 +1,42 @@
+﻿@model Cpm.Core.Services.Profiles.MatchedProfile
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div data-profileid="@Model.Id" data-profilename="@Model.Name" data-startingweek="@Model.StartingWeek"
+     data-extrapotential="@Math.Round(Model.ExtraPotential*100, 0)" data-quality="@Model.Quality"
+     data-season="@Model.SeasonsProfile.ToCompactDictionary().First().Key"
+     data-seasontype="@Model.SeasonsProfile.ToCompactDictionary().First().Value"
+     data-comments="@(string.Join("\n", Model.Comments))" data-description="@Model.Description"
+     data-seasons="@(string.Join(", ", Model.SeasonsProfile.ToCompactDictionary().Select(x => $"{x.Key}: {x.Value}")))">
+    @if (Model.Seasons.Count == 1)
+    {
+        <button class="btn btn-xs btn-default open-editor">Edit</button>@:&nbsp;
+        <button class="btn btn-xs btn-danger delete-variant">Delete</button><br/>
+    }
+    else
+    {
+        <p class="text-danger">Multiple seasons</p>
+    }
+    @(string.Join(", ", Model.SeasonsProfile.ToCompactDictionary().Select(x => $"{x.Key}: {x.Value}")))<br/>
+    Quality: @Model.Quality<br/>
+    Extra potential: @Math.Round(Model.ExtraPotential * 100) %<br/>
+    Points: <br/>
+    <ol start="@Model.StartingWeek">
+        @foreach (var point in Model.Points)
+        {
+            <li>
+                <span class="profile-point-value">@point.Weight.ToString("N4")</span>
+                <div class="profile-point-bar-container">
+                    <div class="profile-point-bar"></div>
+                </div>
+                <span class="profile-point-prod">@point.PerHour.ToString("N1")</span>
+            </li>
+        }
+    </ol>
+    @{ var balance = Model.Points.Sum(x => x.Weight); }
+    @if (balance != 1)
+    {
+        <div class="alert alert-danger">Balance: @balance</div>
+    }
+    Comments: <span title="@(string.Join("\n", Model.Comments))">@(Model.Comments.Any() ? Html.Raw("Has") : Html.Raw("&mdash;"))</span><br/>
+    Description: <span title="@Model.Description">@(string.IsNullOrEmpty(Model.Description) ? Html.Raw("&mdash;") : Html.Raw("Has"))</span>
+</div>

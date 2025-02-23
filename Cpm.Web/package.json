@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "name": "cpm",
+  "private": true,
+  "devDependencies": {
+    "@types/jquery": "^3.3.0",
+    "css-loader": "^0.28.9",
+    "del": "^4.1.0",
+    "file-loader": "^1.1.6",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
+    "merge-stream": "^1.0.1",
+    "style-loader": "^0.19.1",
+    "ts-loader": "^3.3.1",
+    "typescript": "^2.6.2",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-notifier": "^1.5.1"
+  },
+  "dependencies": {
+    "@types/chart.js": "^2.7.10",
+    "chart.js": "^2.7.2",
+    "npm": "^5.7.1"
+  },
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

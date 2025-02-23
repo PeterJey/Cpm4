@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-Cpm.Web-8994AE1B-A82F-4DCC-8610-930C4CE62C46</UserSecretsId>
+    <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="App\algorithms.ts" />
+    <None Remove="App\allocations.ts" />
+    <None Remove="App\app.ts" />
+    <None Remove="App\common.ts" />
+    <None Remove="App\control.ts" />
+    <None Remove="App\dashboard.ts" />
+    <None Remove="App\diary.ts" />
+    <None Remove="App\modaldialog.ts" />
+    <None Remove="App\monthly_diary.ts" />
+    <None Remove="App\profiles.ts" />
+    <None Remove="App\weekly_diary.ts" />
+    <None Remove="webpack.config.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EmailTemplates\Invitation.html" />
+    <EmbeddedResource Include="EmailTemplates\Welcome.html" />
+    <EmbeddedResource Include="EmailTemplates\PasswordReset.html">
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AWS.Logger.AspNetCore" Version="1.2.4" />
+    <PackageReference Include="FluentEmail.Mailgun" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="Optional.Collections" Version="1.1.0" />
+    <PackageReference Include="Optional.Utilities" Version="1.1.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+    <PackageReference Include="Serilog" Version="2.6.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="2.4.0" />
+    <PackageReference Include="Serilog.Sinks.AwsCloudWatch" Version="3.0.86" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--<DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />-->
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cpm.AwsS3\Cpm.AwsS3.csproj" />
+    <ProjectReference Include="..\Cpm.Core\Cpm.Core.csproj" />
+    <ProjectReference Include="..\Cpm.FileExport\Cpm.FileExport.csproj" />
+    <ProjectReference Include="..\Cpm.Infrastructure\Cpm.Infrastructure.csproj" />
+    <ProjectReference Include="..\Cpm.Monitor\Cpm.Monitor.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="App\profiles.ts" />
+    <TypeScriptCompile Include="App\allocations.ts" />
+    <TypeScriptCompile Include="App\app.ts" />
+    <TypeScriptCompile Include="App\algorithms.ts" />
+    <TypeScriptCompile Include="App\control.ts" />
+    <TypeScriptCompile Include="App\modaldialog.ts" />
+    <TypeScriptCompile Include="App\diary.ts" />
+    <TypeScriptCompile Include="App\weekly_diary.ts" />
+    <TypeScriptCompile Include="App\monthly_diary.ts" />
+    <TypeScriptCompile Include="App\dashboard.ts" />
+    <TypeScriptCompile Include="App\common.ts" />
+    <TypeScriptCompile Include="webpack.config.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="App\profiles.js">
+      <DependentUpon>profiles.ts</DependentUpon>
+    </None>
+    <None Update="App\allocations.js">
+      <DependentUpon>allocations.ts</DependentUpon>
+    </None>
+    <None Update="App\diary - Copy.js.map">
+      <DependentUpon>diary.js</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,115 @@
+﻿@page
+@model Cpm.Web.Pages.Admin.Profiles.IndexModel
+@{
+    ViewData["Title"] = "Profiles";
+}
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a asp-page="/Dashboard">Dashboard</a></li>
+        <li><a asp-page="/Admin/Index">Admin</a></li>
+        <li class="active">Profiles</li>
+    </ol><h2>@ViewData["Title"]</h2>
+</div>
+
+<div class="row">
+    <button class="btn btn-xs btn-default open-editor">New</button><br />
+    <div class="profile-list">
+        @foreach (var profile in Model.Profiles)
+        {
+            <h3>@profile.Key</h3>
+            <ul class="list-inline">
+                @foreach (var variant in profile.Value.Variants)
+                {
+                    <li>
+                        @{ await Html.RenderPartialAsync("_ProfileVariant", variant); }
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+@* dialogs *@
+<div hidden="hidden">
+    @foreach (var score in Model.PossibleSeasonScores)
+    {
+        <div id="season-@(score.Key)-items" data-items="@(string.Join("|", score.Value))"></div>
+    }
+    <div id="edit-variant-template" data-confirm="Save" data-title="Edit profile variant">
+        <input type="text" hidden id="profile-id-box">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Profile name</label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input type="text" id="profile-name-box" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label>Season</label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <select id="season-box" class="form-control">
+                        @foreach (var season in Model.PossibleSeasonScores.Keys)
+                        {
+                            <option value="@season">@season</option>
+                        }
+                    </select>
+                </div>
+                <label>Season type</label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <select id="season-type-box" class="form-control"></select>
+                </div>
+                <label>Starting week</label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input type="number" id="starting-week-box" class="form-control" />
+                </div>
+                <label>Extra potential</label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <input type="number" id="extra-potential-box" class="form-control" />
+                    <span class="input-group-addon">%</span>
+                </div>
+                <label>Quality</label>
+                <div class="input-group">
+                    <span class="input-group-addon"></span>
+                    <select id="quality-box" class="form-control">
+                        @foreach (var quality in Model.PossibleQuality)
+                        {
+                            <option value="@quality">@quality</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label>Data</label>
+                <textarea rows="11" id="data-box" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Comments (visible to users)</label>
+                <textarea rows="2" id="comments-box" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Description (for Admin only)</label>
+                <textarea rows="2" id="description-box" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var profiles = new App.Profiles();
+        });
+    </script>
+}

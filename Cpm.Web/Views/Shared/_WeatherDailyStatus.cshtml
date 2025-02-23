@@ -1,0 +1,19 @@
+@model Cpm.Core.Services.Weather.WeatherDailySummary
+
+<div class="panel @(@Model.IsToday ? "panel-primary" : "panel-default") weather-panel">
+    <div class="panel-heading text-center weather-day">
+        <h4 class="panel-title">
+            <span class="text-muted">@Model.Day.ToString("MMMM")</span><br/>
+            <strong>@Model.Day.ToString("ddd d")</strong>
+        </h4>
+    </div>
+    <div class="panel-body text-center weather-day">
+        @*<img src=@Model.Icon alt=@Model.Description/>*@
+        @*@if (Model.IsToday)
+        {
+            <span style="font-size: 180%; float: right">@(Model.Summary?.CurrentTemp?.ToString("F1") ?? "?")</span>
+        }*@
+        <h4>@(Model.Summary?.MaxTemp.ToString("F1") ?? "?")&nbsp;&deg;C</h4>
+        <span style="color: #0bf">@(Model.Summary?.MinTemp.ToString("F1") ?? "?")&nbsp;&deg;C</span>
+    </div>
+</div>

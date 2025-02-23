@@ -1,0 +1,13 @@
+@page
+@model SignedOutModel
+@{
+    ViewData["Title"] = "Signed out";
+}
+
+<div class="page-header">
+    <h2>@ViewData["Title"]</h2>
+</div>
+@Html.Raw(Model.LoadStatusHtml())
+<p>
+    You have successfully signed out.
+</p>

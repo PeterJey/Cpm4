@@ -1,0 +1,18 @@
+﻿@using Cpm.Core
+@model Cpm.Core.ViewModels.NewDayVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@if (Model.Date.HasValue)
+{
+    <td class="@(Model.Date == Clock.Now.Date ? "dc-day-today" : "")" rowspan="@(Model.Fields.Count + 1)">
+        <span class="dc-weekday-name">@Model.Date.Value.ToString("ddd")</span><br />
+        <span class="dc-day-number">@Model.Date.Value.Day</span>&nbsp;<span class="dc-weekday-name">@Model.Date.Value.ToString("MMM")</span>
+    </td>
+}
+else
+{
+    <td class="" rowspan="@(Model.Fields.Count + 1)">
+        <span class="dc-weekday-name">TOTAL</span>
+    </td>
+}
+

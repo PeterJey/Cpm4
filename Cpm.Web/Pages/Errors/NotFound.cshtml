@@ -1,0 +1,20 @@
+﻿@page
+@model NotFoundModel
+@{
+    ViewData["Title"] = "Not Found";
+    Layout = "_StaticLayout";
+}
+<div class="page-header">
+    <h1>Page not found</h1>
+</div>
+<div class="row">
+    <div class="col-md-4"><img src="~/images/notfound.jpg" alt="rotten strawberry" class="img-responsive" /></div>
+    <div class="col-md-8">
+        <h3>We couldn't find what you are looking for.</h3>
+        <ul class="">
+            <li>If you have used a link from your browser's history or one copied and pasted from somewhere, it may not be valid anymore.</li>
+            <li>If you've got here by just using the app, please let our support team know. We may be able to fix this problem, so it won't happen again.</li>
+        </ul>
+        <h3>You can <a href="javascript:history.go(-1)">go back</a> or start again from the <a asp-page="/Index">home page</a>.</h3>
+    </div>
+</div>

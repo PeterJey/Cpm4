@@ -1,0 +1,9 @@
+﻿@model Cpm.Core.ViewModels.ProductAllocationVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@if (Model?.Weight != null)
+{
+    <span>@Model.Weight?.ToString("N0")&nbsp;</span><span class="alloc-unit-short">&nbsp;&nbsp;</span><br />
+    <span>@Model.Trays?.ToString("N0")&nbsp;</span><span class="alloc-unit-short">tr</span><br />
+    <span>@Model.Punnets?.ToString("N0")&nbsp;</span><span class="alloc-unit-short">pu</span>
+}

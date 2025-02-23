@@ -1,0 +1,17 @@
+﻿@page
+@model NoSitesModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="active">Dashboard</li>
+    </ol>
+</div>
+@Html.Raw(Model.LoadStatusHtml())
+<div id="alerts">
+</div>
+
+<h2>Nothing to display.</h2>
+
+<p></p>

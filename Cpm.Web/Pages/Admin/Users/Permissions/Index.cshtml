@@ -1,0 +1,66 @@
+﻿@page
+@model Cpm.Web.Pages.Admin.Users.Permissions.IndexModel
+@{
+    ViewData["Title"] = "Permissions";
+}
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a asp-page="/Dashboard">Dashboard</a></li>
+        <li><a asp-page="/Admin/Index">Admin</a></li>
+        <li><a asp-page="/Admin/Users/Index">Users</a></li>
+        <li class="active">@Model.SelectedUser.GetDefaultDisplayName()</li>
+    </ol>
+    <h2>@ViewData["Title"]</h2>
+</div>
+<h4>User @Model.SelectedUser.GetDefaultDisplayName()</h4>
+@Html.Raw(Model.LoadStatusHtml())
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th><label asp-for="@Model.Permissions[0].FarmName" class="control-label"></label></th>
+                    <th><label asp-for="@Model.Permissions[0].SiteName" class="control-label"></label></th>
+                    <th></th>
+                    <th></th>
+                    <th class="text-center" title="@Html.DisplayNameFor(x => x.Permissions[0].Manage)">Manage</th>
+                    <th class="text-center" title="@Html.DisplayNameFor(x => x.Permissions[0].Forecast)">Forecast</th>
+                    <th class="text-center" title="@Html.DisplayNameFor(x => x.Permissions[0].Allocate)">Allocate</th>
+                    <th class="text-center" title="@Html.DisplayNameFor(x => x.Permissions[0].Plan)">Plan</th>
+                    <th class="text-center" title="@Html.DisplayNameFor(x => x.Permissions[0].Actual)">Actual</th>
+                    <th class="text-center" title="@Html.DisplayNameFor(x => x.Permissions[0].Diary)">Diary</th>
+                    <th class="text-center" title="@Html.DisplayNameFor(x => x.Permissions[0].View)">View</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var permission in Model.Permissions)
+                {
+                    <tr>
+                        <td>@permission.FarmName</td>
+                        <td>@permission.SiteName</td>
+                        <td>
+                            @if (!permission.IsDefault && @Model.ShowClear)
+                            {
+                                <form method="post" asp-page="./Clear" asp-route-userId="@Model.SelectedUser.Id" asp-route-siteId="@permission.SiteId">
+                                    <button type="submit" class="btn btn-xs btn-danger"><span class="fa fa-remove"></span></button>
+                                </form>
+                            }
+                    <td><a asp-page="./Edit" asp-route-userId="@Model.SelectedUser.Id" asp-route-siteId="@permission.SiteId" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    <td class="text-center">@{ Html.RenderPartial("Admin/Users/Permissions/_PermissionStatePartial", permission.Manage); }</td>
+                    <td class="text-center">@{ Html.RenderPartial("Admin/Users/Permissions/_PermissionStatePartial", permission.Forecast); }</td>
+                    <td class="text-center">@{ Html.RenderPartial("Admin/Users/Permissions/_PermissionStatePartial", permission.Allocate); }</td>
+                    <td class="text-center">@{ Html.RenderPartial("Admin/Users/Permissions/_PermissionStatePartial", permission.Plan); }</td>
+                    <td class="text-center">@{ Html.RenderPartial("Admin/Users/Permissions/_PermissionStatePartial", permission.Actual); }</td>
+                    <td class="text-center">@{ Html.RenderPartial("Admin/Users/Permissions/_PermissionStatePartial", permission.Diary); }</td>
+                    <td class="text-center">@{ Html.RenderPartial("Admin/Users/Permissions/_PermissionStatePartial", permission.View); }</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

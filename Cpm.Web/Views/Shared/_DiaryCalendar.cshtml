@@ -1,0 +1,36 @@
+﻿@model Cpm.Core.ViewModels.DiaryVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="row">
+    <h3 class="text-center">@Model.Title</h3>
+    <div hidden id="position">@Model.Position</div>
+    <table class="diary diary-calendar">
+        <thead>
+            <tr>
+                <th></th>
+                @foreach (var weekDay in Model.Weekdays)
+                {
+                    <th class="dc-weekday-name">
+                        @weekDay
+                    </th>
+                }
+                <th class="dc-weekday-name text-muted">Total</th>
+                <th class="dc-weekday-name "></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var week in Model.Weeks)
+            {
+                <tr>
+                    <td class="dc-week">
+                        @if (week.WeekNumber >= 1)
+                        {
+                            <a asp-page="/Fields/WeeklyDiary" asp-route-siteid="@Model.SiteId" asp-route-position="@week.WeekNumber">@week.WeekNumber.ToString()</a>
+                        }
+                    </td>
+                    @{ await Html.RenderPartialAsync("_DiaryWeek", week);}
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,14 @@
+@model Cpm.Core.Services.Weather.WeatherPeriodicSummary
+
+<div class="panel @(@Model.IsCurrent ? "panel-primary" : "panel-default") weather-panel">
+    <div class="panel-heading text-center weather-period">
+        <h4 class="panel-title">@Model.Title</h4>
+        <span class="text-muted">@Model.Description</span>
+    </div>
+    <div class="panel-body text-center weather-period">
+        <h4>@(Model.AvgTemp?.ToString("F1") ?? "?")&nbsp;&deg;C</h4>
+        <span style="color: #07b">@(Model.MinTemp?.ToString("F1") ?? "?")&nbsp;&deg;C</span>
+        &nbsp;/&nbsp;
+        <span style="color: #f45">@(Model.MaxTemp?.ToString("F1") ?? "?")&nbsp;&deg;C</span>
+    </div>
+</div>

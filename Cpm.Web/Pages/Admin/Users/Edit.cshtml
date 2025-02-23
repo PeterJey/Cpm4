@@ -1,0 +1,103 @@
+﻿@page
+@model Cpm.Web.Pages.Admin.Users.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a asp-page="/Dashboard">Dashboard</a></li>
+        <li><a asp-page="/Admin/Index">Admin</a></li>
+        <li><a asp-page="/Admin/Users/Index">Users</a></li>
+        @if (Model.Input.IsNew)
+        {
+            <li class="active">New user</li>
+        }
+        else
+        {
+            <li class="active">@Model.Input.FirstName @Model.Input.LastName</li>
+        }
+    </ol>
+    @if (Model.Input.IsNew)
+    {
+        <h2>New user</h2>
+    }
+    else
+    {
+        <h2>Edit user "@Model.Input.FirstName @Model.Input.LastName"</h2>
+    }
+</div>
+@Html.Raw(Model.LoadStatusHtml())
+<hr />
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="Input.Id" class="form-control" />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Input.Email" class="control-label"></label>
+                @if (Model.Input.IsNew)
+                {
+                    <input asp-for="Input.Email" class="form-control"/>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                }
+                else
+                {
+                    <input asp-for="Input.Email" class="form-control" readonly />
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.FirstName" class="control-label"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LastName" class="control-label"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            @if (!Model.Input.IsNew)
+            {
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Input.IsSuspended"/> <label asp-for="Input.IsSuspended" class="control-label"></label>
+                    </label>
+                </div>
+            }
+            @if (Model.Input.IsNew)
+            {
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Input.SendWelcomeEmail" /> <label asp-for="Input.SendWelcomeEmail" class="control-label"></label>
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="Input.Note" class="control-label"></label>
+                <textarea asp-for="Input.Note" class="form-control" rows="10"></textarea>
+                <span asp-validation-for="Input.Note" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        @if (Model.Input.IsNew)
+        {
+            <input type="submit" value="Create" class="btn btn-success" />
+        }
+        else
+        {
+            <input type="submit" value="Save" class="btn btn-success" />
+        }
+    </div>
+</form>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

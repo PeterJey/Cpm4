@@ -1,0 +1,83 @@
+﻿@page
+@model IndexModel
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Home page";
+    Layout = "_SiteLayout";
+}
+
+<body class="homepage">
+
+<div class="homepage_text">
+    <div class="applink">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a asp-page="/Dashboard" class="btn btn-primary btn-lg">Open Dashboard</a>
+        }
+        else
+        {
+            <a asp-page="/Account/Login" class="btn btn-primary btn-lg">Login</a>
+        }
+    </div>
+    <div class="logo">
+        <img src="/images/aglogo-trans.png" alt="AG Logo"/>
+    </div>
+    <div class="center-block">
+        <h1 class="brandname">CPM 4</h1>
+        <div class="description-block">
+            <p><strong>Crop&nbsp;Projection&nbsp;and&nbsp;Management</strong> software is an industry leading IT solution designed
+                to assist growers and managers improve the planning and forecasting of soft fruit crops.
+                </p>
+            <p>Developed by <strong>AG&nbsp;Recruitment&nbsp;&amp;&nbsp;Management</strong>,
+                the innovative software is enabling agri-business's to improve their understanding
+                of crop performance and assist manager's to better realise the value of crops.
+            </p>
+            @if (Model.Result != null)
+            {
+                if (Model.Result.Succeeded)
+                 {
+                    <p class="text-success">Database initialized successfully.</p>
+                 }
+                 else
+                 {
+                     <p class="text-danger">There were some problems:</p>
+                     <ul class="text-danger">
+                         @foreach (var error in Model.Result.Errors)
+                         {
+                             <li>@error.Description</li>
+                         }
+                     </ul>
+                 }
+            }
+        </div>
+    </div>
+    <footer class="copyright">
+        <p>Contact:</p>
+        <p><a href="mailto:cpm@agrecruitment.eu">cpm@agrecruitment.eu</a>
+        </p>
+        <p><a href="tel:00441227806789">+44 (0) 1227 806 789</a>
+        </p>
+        <p>&copy; 2017 - AG Recruitment &amp; Management Ltd.</p>
+    </footer>
+</div>
+
+<environment include="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
+</environment>
+
+</body>

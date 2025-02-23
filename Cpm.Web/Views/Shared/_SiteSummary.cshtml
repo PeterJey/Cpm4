@@ -1,0 +1,139 @@
+﻿@using Cpm.Core.ViewModels
+@using Cpm.Web.Security
+@model Cpm.Core.ViewModels.SiteFieldsSummaryVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<table class="table table-condensed">
+    <thead class="bg-primary">
+        <tr>
+            <th class="text-center">Name</th>
+            <th class="text-center">Description</th>
+            <th class="text-center">Variety</th>
+            @if (User.CanManageApplication())
+            {
+                <th class="text-center">Profile</th>
+            }
+            <th class="text-center">Area [@Model.AreaUnit]</th>
+            <th class="text-center">First day</th>
+            <th class="text-center">Last day</th>
+            <th class="text-center">Days</th>
+            <th class="text-center">Picks</th>
+            <th class="text-center">Budget</th>
+            <th class="text-center">[t/ac]</th>
+            <th class="text-center">To date</th>
+            @if (User.CanViewForecastsForSite(Model.SiteId))
+            {
+                <th class="text-center">Active scenario</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var field in Model.Fields)
+        {
+        <tr data-field-id="@field.FieldId" data-ypa="@field.YieldPerArea" data-ppa="@field.PlantsPerArea" data-ypp="@field.YieldPerPlant"
+            data-profile-name="@field.ProfileName">
+            @if (User.CanViewDiaryForSite(Model.SiteId))
+            {
+                <td><a asp-page="/Fields/MonthlyDiary" asp-route-fieldid="@field.FieldId">@field.Name</a></td>
+            }
+            else
+            {
+                <td>@field.Name</td>
+            }
+            <td>
+                <span class="description-text">@field.Description</span>
+                @if (User.CanChangeDescriptionForField(field.FieldId))
+                {
+                    <button class="btn-link pull-right change-field-description" data-field-id="@field.FieldId">
+                        <span class="fa fa-pencil"></span>
+                    </button>
+                }
+            </td>
+            <td>@field.Variety</td>
+            @if (User.CanManageApplication())
+            {
+                <td>
+                    <span>@field.ProfileName</span>
+                    <button class="btn-link pull-right change-profile" data-field-id="@field.FieldId">
+                        <span class="fa fa-pencil"></span>
+                    </button>
+                </td>
+            }
+            <td class="text-right">@field.Area</td>
+            <td class="text-right">@field.FirstDay</td>
+            <td class="text-right">@field.LastDay</td>
+            <td class="text-right">@field.TotalDays</td>
+            <td class="text-right">@field.NumberOfPicks</td>
+            <td class="text-right">
+                @field.Budget
+                @if (User.CanChangeBudgetForField(field.FieldId))
+                {
+                    <button class="btn-link pull-right change-budget">
+                        <span class="fa fa-pencil"></span>
+                    </button>
+                }
+            </td>
+            <td class="text-right">@field.TonnesPerAcre</td>
+            <td class="text-right">@field.BudgetToDate</td>
+            @if (User.CanChangeActiveScenarioForField(field.FieldId))
+            {
+                <td class="text-right">
+                    <select class="active-scenario-select"
+                            data-field-id="@field.FieldId"
+                            data-field-name="@field.Name">
+                        @foreach (var scenarioVm in field.AvailableScenarioVms)
+                        {
+                            <option value="@scenarioVm.ScenarioId"
+                                    class="@(scenarioVm.IsDeleted ? "text-danger" : "")"
+                                    @(scenarioVm.ScenarioId == field.ActiveScenarioId ? "selected" : "")>
+                                @scenarioVm.Name @(scenarioVm.IsDeleted ? "(Deleted)" : "")
+                            </option>
+                        }
+                    </select>
+                </td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+
+@* dialogs *@
+<div hidden="hidden">
+    <div id="edit-budget-template" data-confirm="Save" data-title="Edit budget">
+        <div class="panel panel-default">
+            <div class="panel-heading">Per area</div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <span class="input-group-addon">Kilograms per @Model.AreaUnit</span>
+                    <input type="text" id="yield-ypa" class="form-control mbox-focus mbox-number">
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">Per plant</div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <span class="input-group-addon">Plants per @Model.AreaUnit</span>
+                    <input type="text" id="yield-ppa" class="form-control mbox-number">
+                </div>
+                <br />
+                <div class="input-group">
+                    <span class="input-group-addon">Grams per plant</span>
+                    <input type="text" id="yield-ypp" class="form-control mbox-number">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="change-profile-template" data-confirm="Save" data-title="Change profile">
+        <div class="input-group">
+            <span class="input-group-addon"></span>
+            <select id="profile-box" class="form-control mbox-focus">
+                @foreach (var profile in Model.ExistingProfiles ?? Enumerable.Empty<ProfileOptionVm>())
+                {
+                    <option value="@profile.Name">@profile.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>

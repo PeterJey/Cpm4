@@ -1,0 +1,125 @@
+﻿@page
+@model DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li class="active">Dashboard (@Model.FullSiteName)</li>
+    </ol>
+</div>
+@Html.Raw(Model.LoadStatusHtml())
+<div id="alerts">
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+    <ul class="list-inline">
+        <li>
+            @if (Model.ShowForecasting)
+            {
+                <div>
+                    <div class="dropdown site-dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            Go to scenario
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            @if (!Model.Scenarios.Any())
+                            {
+                                <li class="disabled"><a href="#">No scenarios yet.</a></li>
+                            }
+                            @foreach (var scenario in @Model.Scenarios)
+                            {
+                                <li><a asp-controller="Scenarios" asp-action="Load" asp-route-scenarioid="@scenario.ScenarioId">@scenario.Name</a></li>
+                            }
+                            <li role="separator" class="divider"></li>
+                            <li><a asp-controller="Scenarios" asp-action="Create" asp-route-siteid="@Model.Site.SiteId">Create new scenario</a></li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </li>
+        <li>
+            @if (User.CanViewDiaryForSite(Model.Site?.SiteId))
+            {
+                <a asp-page="/Fields/WeeklyDiary" asp-route-siteid="@Model.Site?.SiteId" class="btn btn-default">Weekly diary</a>
+            }
+        </li>
+        <li>
+            @if (User.CanViewAllocationsForSite(Model.Site?.SiteId))
+            {
+                <a asp-page="/Allocations/Index" asp-route-siteid="@Model.Site?.SiteId" class="btn btn-default">Product allocation</a>
+            }
+        </li>
+        @if (Model.VisibleFarms.Sum(f => f.Sites.Count) > 1)
+        {
+            @*<li>
+                @if (Model.Site == null)
+                {
+                    <h4 class="text-muted">Please select a site</h4>
+                }
+            </li>*@
+            <li>
+                <div class="dropdown site-dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                        Select site
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var farm in Model.VisibleFarms)
+                        {
+                            <li class="dropdown-header">@farm.Name</li>
+                            foreach (var site in farm.Sites)
+                            {
+                                <li><a asp-route-siteid="@site.SiteId">@site.Name</a></li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </li>
+        }
+    </ul>
+    @*else
+        {
+            <h2 class="site-title">@Model.Site.Name on @Model.Site.Farm.Name</h2>
+        }*@
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Site != null)
+        {
+            <div id="scenarioFields"></div>
+            <hr />
+            <div id="weatherReport"></div>
+            <div id="loadingSpinner" hidden>
+                <p>Checking weather forecast <span class="fa fa-spinner fa-spin fa-lg"></span></p>
+            </div>
+            <div id="loadingError" hidden>
+                <p>Could not update the weather forecast, please try again later.</p>
+                <button class="btn btn-default" id="reloadWeather">Retry</button>
+            </div>
+        }
+    </div>
+</div>
+
+@* dialogs *@
+<div hidden="hidden">
+    <div id="change-description-template" data-confirm="Apply" data-title="Edit description">
+        <div class="input-group">
+            <span class="input-group-addon">Description</span>
+            <input type="text" id="description-box" class="form-control">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var dashboard = new App.Dashboard('@(Model.Site?.Postcode ?? "")', '@(Model.Site.SiteId ?? "")');
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,43 @@
+﻿@page
+@model Cpm.Web.Pages.Scenarios.ControlModel
+@{
+    ViewData["Title"] = "Scenario";
+}
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a id="dashboard-link" asp-page="/Dashboard" asp-route-siteid=@Model.Context.SiteId>Dashboard (@Model.Context.FarmName / @Model.Context.SiteName)</a></li>
+        <li class="active">Scenario "<span id="scenario-name">@Model.Context.Name</span>"</li>
+    </ol>
+</div>
+
+<div id="settings">
+</div>
+<hr />
+<div id="results">
+</div>
+<hr />
+
+<canvas id="myChart" height="150"></canvas>
+
+@* dialogs *@
+<div hidden="hidden">
+    <div id="rename-scenario-template" data-confirm="Rename" data-title="Rename scenario">
+        <div class="input-group">
+            <span class="input-group-addon">New name</span>
+            <input type="text" id="name-box" class="form-control mbox-focus">
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(() => {
+            var control = new App.Control("@Model.Context.Id", "@Model.Context.IsDirty.ToString()");
+        });
+    </script>
+}
+
+
+

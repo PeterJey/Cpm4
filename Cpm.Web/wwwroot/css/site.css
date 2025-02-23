@@ -1,0 +1,560 @@
+/* ========================================================================================== */
+/* Settings from the blank project */
+/* ========================================================================================== */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+/* ========================================================================================== */
+/* Home page / landing page */
+/* ========================================================================================== */
+.homepage {
+    margin: 0;
+    background: url("/images/background.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 100%;
+    color: #b4e5ff;
+}
+
+.homepage_text {
+    color: #b4e5ff;
+    text-shadow: 0.1em 0.1em 0.2em black;
+}
+
+.applink {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+
+.copyright {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+}
+
+
+.logo {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+}
+
+.center-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 80vw;
+}
+
+.brandname {
+    margin: 0;
+    text-shadow: 0 0 0.3em #1f7aa9, 0 0 0.3em #1f7aa9;
+}
+
+.description-block {
+    width: 99%;
+    margin: 0 auto;
+}
+
+.contact {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+    .brandname {
+        font-size: 8vw;
+        margin: 4vw;
+    }
+
+    .description-block {
+        font-size: 18px;
+        line-height: 130%;
+    }
+
+    .center-block {
+        width: 40vw;
+    }
+
+    .contact {
+        font-size: 1vw;
+        margin: 8px;
+    }
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .brandname {
+        font-size: 100px;
+        margin: 60px;
+    }
+
+    .description-block {
+        font-size: 16px;
+        line-height: 110%;
+    }
+
+    .center-block {
+        width: 60vw;
+    }
+
+    .contact {
+        font-size: 12px;
+        margin: 8px;
+    }
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    .brandname {
+        font-size: 10vw;
+        margin: 30px;
+    }
+
+    .description-block {
+        font-size: 12px;
+    }
+
+    .center-block {
+        width: 80vw;
+    }
+
+    .contact {
+        font-size: 10px;
+        margin: 2px;
+        line-height: 50%;
+    }
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    .brandname {
+        font-size: 15vw;
+        margin: 30px;
+    }
+
+    .description-block {
+        font-size: 12px;
+    }
+
+    .center-block {
+        width: 80vw;
+    }
+
+    .contact {
+        font-size: 10px;
+        margin: 2px;
+    }
+}
+
+/* ========================================================================================== */
+/* Log out button as link on navbar but without underline */
+/* ========================================================================================== */
+
+.navbar-btn.navbar-link {
+    text-decoration: none;
+}
+
+/* ========================================================================================== */
+/* Customized overall */
+/* ========================================================================================== */
+
+.page-header {
+    margin-bottom: 0;
+}
+
+/* ========================================================================================== */
+/* Customized bootstrap */
+/* ========================================================================================== */
+
+/* Weather on Dashboard */
+
+.panel-body.weather-day {
+    padding: 3px;
+}
+
+.panel-body.weather-day > h4 {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.panel-body.weather-period {
+    padding: 3px;
+}
+
+.panel-body.weather-period > h4 {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.panel.weather-panel {
+    margin-bottom: 0;
+}
+
+.table.table-nomargin {
+    margin-bottom: 0;
+}
+
+/* Diary calendar */
+
+#calendar-navigation {
+    margin: 0 auto 20px;
+    text-align: center;
+    list-style: inside;
+}
+
+table.diary {
+    border-collapse: collapse;
+    margin: 0 auto 20px;
+}
+
+.diary td {
+    border: 1px lightgray solid;
+    vertical-align: middle;
+    padding: 5px;
+    width: 7em;
+}
+
+td.stats-show {
+    color: darkgreen;
+    font-size: 70%;
+}
+
+td.stats-muted {
+    color: lightgray;
+    font-size: 70%;
+}
+
+.diary .dc-week {
+    border: none;
+    vertical-align: middle;
+    padding: 5px;
+    width: 2em;
+    text-decoration: none;
+}
+
+.diary td.dc-total {
+    vertical-align: middle;
+}
+
+.diary-calendar .dc-week {
+    font-size: 150%;
+}
+
+.diary-week .dc-week {
+    font-size: 120%;
+}
+
+.diary-weekly tr.dc-daytotal td {
+    border: none;
+    text-align: right;
+    font-size: 100%;
+    font-weight: bold;
+}
+
+.dc-weekday-name {
+    text-align: center;
+    font-size: 150%;
+}
+
+.dc-day {
+    cursor: pointer;
+}
+
+.dc-day-number {
+    font-weight: bold;
+    font-size: 150%;
+}
+
+.dc-day-today .dc-day-number {
+    border-radius: 0.5em;
+    padding: 0 0.3em;
+    background: #1a597a;
+    color: white;
+}
+
+.dc-day-padding .dc-day-number {
+    font-weight: normal;
+}
+
+.dc-day.diary-day-selected {
+    background-color: lightblue;
+}
+
+.diary-weekly .dc-day .dc-day-number {
+    display: none;
+}
+
+.diary-calendar .dc-day-number {
+    float: left;
+}
+
+.dc-icons {
+    color: lightslategray;
+    float: right;
+}
+
+.dc-weights {
+    text-align: right;
+}
+
+.val-forecasted {
+    color: blueviolet;
+}
+
+.val-inferred {
+    color: orangered;
+}
+
+.val-planned {
+    color: deepskyblue;
+}
+
+.val-harvest {
+    color: blue;
+}
+
+.val-harvest-completed {
+    color: darkblue;
+}
+
+.relative-exceeded {
+    color: orangered;
+}
+
+.dc-weights .val-harvest {
+    font-weight: bold;
+}
+
+.dc-weights .val-harvest-completed {
+    font-weight: bold;
+}
+
+#details {
+    min-height: 3em;
+}
+
+/* diary details */
+
+#loadingSpinner {
+    font-size: 150%;
+    margin: 4em 0;
+    text-align: center;
+}
+
+#loadingError {
+    font-size: 150%;
+    margin: 4em 0;
+    text-align: center;
+}
+
+.note-picture img {
+    height: 100px;
+    border: darkblue 1px solid;
+    width: 130px;
+    border-radius: 3px;
+    background: url("../images/loading.gif") 50% no-repeat;
+}
+
+/* dashboard */
+.site-title {
+    margin: 5px;
+}
+
+.dropdown.site-dropdown li .dropdown-header {
+    font-size: 100%;
+    color: gray;
+    padding-left: 0;
+}
+
+.dropdown.site-dropdown li {
+    padding-left: 2em;
+}
+
+/* forecast */
+.inline-button {
+    display: inline-block;
+}
+
+/* modal dialog */
+#mbox-spinner {
+    margin: 1em;
+}
+
+/* algorithms - scenario field */
+
+table.algorithms {
+    border-collapse: collapse;
+    margin: 0 auto 20px;
+}
+
+.algorithms td {
+    border: 1px lightgray solid;
+    vertical-align: middle;
+    padding: 5px;
+    width: 7em;
+}
+
+.algorithms .algorithms-summary td {
+    border: none;
+}
+
+/* allocations */
+
+table.alloc {
+    border-collapse: collapse;
+    margin: 0 auto 20px;
+}
+
+.alloc td {
+    border: 1px lightgray solid;
+    vertical-align: top;
+    padding: 5px;
+    width: 7em;
+}
+
+.alloc th {
+    font-size: 120%;
+}
+
+.alloc-row-first:not(:first-of-type) {
+    border-top: 3px solid;
+    padding-top: 0.2em;
+    margin-top: 0.2em;
+}
+
+table.alloc tr:hover {
+    background: beige;
+}
+
+.alloc-product-slot,
+.alloc-availability {
+    text-align: right;
+    cursor: pointer;
+}
+
+.alloc-product-total {
+    text-align: right;
+}
+
+.alloc-row-totals,
+.alloc-row-first td:not(:first-of-type){
+    color: gray;
+}
+
+.alloc-row-first td:not(:first-of-type){
+    font-weight: bold;
+}
+
+.alloc-unit-short {
+    font-family: monospace;
+}
+
+.alloc-row-totals .alloc-product-slot,
+.alloc-row-first .alloc-product-slot,
+.alloc-row-totals .alloc-availability,
+.alloc-row-first .alloc-availability {
+    cursor: default;
+}
+
+.alloc-cell-overallocated {
+    color: red;
+}
+
+.alloc-cell-underallocated {
+    color: darkmagenta;
+}
+
+
+/* profiles */
+.profile-list > ul > li {
+    border: lightgray 1px solid;
+    padding: 1em;
+    border-radius: 0.5em;
+    margin: 0.5em;
+    display: table-cell;
+}
+
+.profile-point-value {
+    font-weight: bold;
+}
+
+.profile-point-prod {
+    font-style: italic;
+}
+
+.profile-point-bar-container {
+    float: right;
+    width: 5em;
+    height: 1em;
+    background: transparent;
+    margin: 0.2em;
+    border: 1px transparent solid;
+    border-radius: 0.2em;
+}
+
+.profile-point-bar {
+    width: 60%; 
+    height: 100%; 
+    background: lightblue; 
+    border-radius: 0.2em;
+}
+
+
+/* modal dialogs */
+.modal textarea {
+    resize: vertical;
+    min-width: 100%;
+}
+
+
+
+/* AD HOC*/
+
+.scenario-title {
+    font-size: 150%;
+}
+
+#original-name {
+}

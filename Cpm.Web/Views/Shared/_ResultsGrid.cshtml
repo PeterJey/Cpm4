@@ -1,0 +1,65 @@
+﻿@model Cpm.Core.ViewModels.GridResultsVm
+
+<div class="row">
+    <table class="diary diary-calendar">
+        <thead>
+            <tr>
+                <th class="text-center">Week</th>
+                <th class="text-center">Commencing</th>
+                <th class="text-center">Labour</th>
+                <th class="text-center">L.H.</th>
+                <th class="text-center">Total</th>
+                <th class="text-center">F.H.</th>
+                @foreach (var col in Model.Series.Columns)
+                {
+                    <th class="text-center grid-data-series">@col</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-right"><strong>@Model.SummaryHeader.GrandTotal</strong></td>
+                <td></td>
+                @foreach (var col in Model.SummaryHeader.Subtotals)
+                {
+                    <td class="text-right"><strong>@col</strong></td>
+                }
+            </tr>
+        @foreach (var row in Model.Rows)
+        {
+            <tr class="grid-data-row">
+                <td class="text-right">@row.Week</td>
+                <td class="text-right grid-data-label">@row.Commencing</td>
+                <td class="text-right grid-data-labour">@row.Labour</td>
+                <td class="text-right @(row.ShowStats ? "stats-show" : "stats-muted")">
+                    @if (row.ShowStats)
+                    {
+                        <div>@row.StatsManHoursMax</div>
+                        <div>@row.StatsManHoursMin</div>
+                    }
+                </td>
+                <td class="text-right grid-data-total"><strong>@row.Total</strong></td>
+                <td class="text-right @(row.ShowStats ? "stats-show" : "stats-muted")">
+                    @if (row.ShowStats)
+                    {
+                        <div>@row.StatsWeightMax</div>
+                        <div>@row.StatsWeightMin</div>
+                    }
+                </td>
+                @foreach (var value in row.Values)
+                {
+                    <td class="text-right grid-data-val @(value.IsActual ? "val-harvest-completed" : value.IsInferred ? "val-inferred" : "val-forecasted")">@value.Weight</td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <button id="download-data-grid" class="btn btn-default">Download as Excel file</button>
+</div>

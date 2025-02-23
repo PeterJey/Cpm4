@@ -1,0 +1,26 @@
+﻿@model Cpm.Core.Services.Weather.WeatherReport
+
+<table class="table table-condensed table-nomargin">
+    <tbody>
+        <tr>
+            @foreach (var period in Model.Periodic)
+            {
+                <td>
+                    @{await Html.RenderPartialAsync("_WeatherPeriodStatus", period);}
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+<table class="table table-condensed table-nomargin">
+    <tbody>
+        <tr>
+            @foreach (var day in Model.Daily)
+            {
+                <td>
+                    @{await Html.RenderPartialAsync("_WeatherDailyStatus", day);}
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,53 @@
+﻿@model Cpm.Core.ViewModels.WeeklyOverviewVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="row">
+    <h3 class="text-center">@Model.Title</h3>
+    <div hidden id="position">@Model.Position</div>
+    <table class="diary diary-weekly">
+        <thead>
+            <tr>
+                <th></th>
+                @foreach (var day in Model.DayHeaderWeek1)
+                {
+                    <th class="dc-weekday-name @(@day.IsToday ? "dc-day-today" : "")">
+                        @day.Weekday<br /><span class="small"><span class="dc-day-number">@day.Day</span><br />@day.Month</span>
+                    </th>
+                }
+                <th class="dc-weekday-name text-muted">Total</th>
+                <th class="dc-weekday-name "></th>
+                @foreach (var day in Model.DayHeaderWeek2)
+                {
+                    <th class="dc-weekday-name @(@day.IsToday ? "dc-day-today" : "")">
+                        @day.Weekday<br /><span class="small"><span class="dc-day-number">@day.Day</span><br />@day.Month</span>
+                    </th>
+                }
+                <th class="dc-weekday-name text-muted">Total</th>
+                <th class="dc-weekday-name "></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="dc-daytotal">
+                <td>Daily Total</td>
+                @foreach (var val in Model.Week1Totals)
+                {
+                    <td>@val.ToString("N0")</td>
+                }
+                <td></td>
+                <td></td>
+                @foreach (var val in Model.Week2Totals)
+                {
+                    <td>@val.ToString("N0")</td>
+                }
+            </tr>
+            @foreach (var field in Model.Fields)
+            {
+                <tr>
+                    <td class="dc-week"><a asp-page="/Fields/MonthlyDiary" asp-route-fieldid="@field.Week1.FieldId">@field.Week1.FieldName</a></td>
+                    @{ await Html.RenderPartialAsync("_DiaryWeek", field.Week1);}
+                    @{ await Html.RenderPartialAsync("_DiaryWeek", field.Week2);}
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

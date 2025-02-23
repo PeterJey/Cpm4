@@ -1,0 +1,74 @@
+﻿@page
+@model Cpm.Web.Pages.Admin.Users.Permissions.EditModel
+@{
+    ViewData["Title"] = "Edit permissions";
+}
+
+<div class="page-header">
+    <ol class="breadcrumb">
+        <li><a asp-page="/Dashboard">Dashboard</a></li>
+        <li><a asp-page="/Admin/Index">Admin</a></li>
+        <li><a asp-page="/Admin/Users/Index">Users</a></li>
+        <li><a asp-page="./Index" asp-route-id="@Model.SiteUser.Id">@Model.SiteUser.GetDefaultDisplayName()</a></li>
+        <li class="active">Site: @Model.Site.Name</li>
+    </ol>
+    <h2>@ViewData["Title"]</h2>
+</div>
+<h4>@Model.SiteUser.GetDefaultDisplayName() for @Model.Input.SiteName</h4>
+@Html.Raw(Model.LoadStatusHtml())
+
+<hr />
+<div class="row">
+    <form method="post" asp-route-userId="@Model.SiteUser.Id" asp-route-siteId="@Model.Input.SiteId">
+        <div class="col-md-4">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="Input.FarmName" class="form-control" />
+            <input type="hidden" asp-for="Input.SiteName" class="form-control" />
+            <div class="form-group">
+                <div class="checkbox">
+                    <input asp-for="Input.Manage"/>
+                    <label asp-for="Input.Manage" class="control-label"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <input asp-for="Input.Forecast" /> <label asp-for="Input.Forecast" class="control-label"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <input asp-for="Input.Allocate" /> <label asp-for="Input.Allocate" class="control-label"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <input asp-for="Input.Plan" /> <label asp-for="Input.Plan" class="control-label"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <input asp-for="Input.Actual" /> <label asp-for="Input.Actual" class="control-label"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <input asp-for="Input.Diary" /> <label asp-for="Input.Diary" class="control-label"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <input asp-for="Input.View"/>
+                    <label asp-for="Input.View" class="control-label"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-default" asp-page="../Index" asp-route-userid="@Model.SiteUser.Id" asp-route-siteid="@Model.Site.SiteId">Cancel</a>
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

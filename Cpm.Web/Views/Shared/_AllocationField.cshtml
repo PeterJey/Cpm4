@@ -1,0 +1,26 @@
+﻿@using Cpm.Core.ViewModels
+@model Cpm.Core.ViewModels.FieldAllocationVm
+@addTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<td class="">
+    @if (Model?.Field?.IsPlaceholder ?? true)
+    {
+        @:All fields
+    }
+    else
+    {
+        <a asp-page="/Fields/MonthlyDiary" asp-route-fieldid="@Model.Field.Id">@Model?.Field?.FieldName</a>
+    }
+</td>
+<td class="alloc-availability alloc-availability-slot" data-weight="@Model?.ToAllocate">
+    @Model?.ToAllocate?.ToString("N0")
+</td>
+@foreach (var product in Model?.Products ?? Enumerable.Empty<ProductAllocationVm>())
+{
+    <td class="alloc-product-slot" data-product="@product?.Product?.ToKey()" data-weight="@product?.Weight">
+        @{await Html.RenderPartialAsync("_ProductQuantity", product);}
+    </td>
+}
+<td class="alloc-product-total" data-weight="@Model?.Total">
+    @Model?.Total?.ToString("N0")
+</td>
